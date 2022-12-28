@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('company');
             $table->string('location');
+            $table->string('url')->nullable();
             $table->date('started_at');
             $table->date('ended_at')->nullable();
             $table->boolean('status')->default(true);

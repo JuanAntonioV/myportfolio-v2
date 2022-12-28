@@ -94,4 +94,17 @@ class UserController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function profile(Request $request)
+    {
+        $user = User::findOrfail($request->user()->id);
+
+        $data = $user->with(['detail', 'contact', 'resume', 'project', 'experience', 'skill', 'course'])->find($user->id);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data user berhasil didapatkan',
+            'data' => $data
+        ], Response::HTTP_OK);
+    }
 }

@@ -8,34 +8,44 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\UserContact;
-use function PHPUnit\Framework\isEmpty;
 
 class UserContactController extends Controller
 {
-    public function getContact(Request $request, $id)
+
+    public function index()
     {
-        try {
-            $user = UserContact::where('user_id', $id)->first();
+        $contact = UserContact::all();
 
-            if (!$user) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'User tidak ditemukan'
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Data kontak berhasil didapatkan',
-                'data' => $user
-            ], Response::HTTP_OK);
-        } catch (\Exception $e) {
+        if (empty($contact)) {
             return response()->json([
                 'status' => false,
-                'message' => 'Terjadi kesalahan',
-                'error' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                'message' => 'Data kontak tidak ditemukan'
+            ], Response::HTTP_NOT_FOUND);
         }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data kontak berhasil didapatkan',
+            'data' => $contact
+        ], Response::HTTP_OK);
+    }
+
+    public function getContact(Request $request)
+    {
+        $contact = UserContact::where('user_id', $request->user()->id)->get();
+
+        if (empty($contact)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data pengalaman tidak ditemukan'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data pengalaman berhasil didapatkan',
+            'data' => $contact
+        ], Response::HTTP_OK);
     }
 
     public function contact(Request $request)

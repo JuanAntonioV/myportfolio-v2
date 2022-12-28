@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserContactController;
+use App\Http\Controllers\User\ExperienceController;
+use App\Http\Controllers\User\JobDeskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,12 +50,27 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('user', [UserController::class, 'index']);
+    Route::get('user/all', [UserController::class, 'index']);
+    Route::get('user', [UserController::class, 'profile']);
     Route::get('user/{id}', [UserController::class, 'getUser']);
     Route::put('user/detail/{id}', [UserController::class, 'updateUserDetail']);
 
     // Create & Update User Contact
-    Route::get('user/contact/{id}', [UserContactController::class, 'getContact']);
-    Route::post('user/contact', [UserContactController::class, 'contact']);
-    Route::delete('user/contact/{id}', [UserContactController::class, 'deleteContact']);
+    Route::get('contact/all', [UserContactController::class, 'index']);
+    Route::get('contact', [UserContactController::class, 'getContact']);
+    Route::post('contact', [UserContactController::class, 'contact']);
+    Route::delete('contact/{id}', [UserContactController::class, 'deleteContact']);
+
+    // User Experience
+    Route::get('experience/all', [ExperienceController::class, 'index']);
+    Route::get('experience', [ExperienceController::class, 'get']);
+    Route::post('experience', [ExperienceController::class, 'add']);
+    Route::put('experience/{id}', [ExperienceController::class, 'update']);
+    Route::delete('experience/{id}', [ExperienceController::class, 'delete']);
+
+    // Experience Jobdesk
+    Route::get('jobdesk/{expId}', [JobDeskController::class, 'get']);
+    Route::post('jobdesk/{expId}', [JobDeskController::class, 'add']);
+    Route::put('jobdesk/{id}', [JobDeskController::class, 'update']);
+    Route::delete('jobdesk/{id}', [JobDeskController::class, 'delete']);
 });

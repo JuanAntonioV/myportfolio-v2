@@ -16,6 +16,8 @@ class Experience extends Model
         'title',
         'company',
         'status',
+        'url',
+        'location',
         'started_at',
         'ended_at',
     ];
@@ -30,7 +32,7 @@ class Experience extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function experienceJobdesk()
+    public function jobdesk()
     {
         return $this->hasMany(ExperienceJobdesk::class);
     }
