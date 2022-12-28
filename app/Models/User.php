@@ -18,9 +18,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'status',
     ];
 
     /**
@@ -30,15 +30,49 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+//    /**
+//     * The attributes that should be cast.
+//     *
+//     * @var array<string, string>
+//     */
+//    protected $casts = [
+//        'email_verified_at' => 'datetime',
+//    ];
+
+    public function userDetail()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
+
+    public function userContact()
+    {
+        return $this->hasMany(UserContact::class);
+    }
+
+    public function userResume()
+    {
+        return $this->hasMany(UserResume::class);
+    }
+
+    public function project()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    public function experience()
+    {
+        return $this->hasMany(Experience::class);
+    }
+
+    public function skill()
+    {
+        return $this->hasMany(Skill::class);
+    }
+
+    public function course()
+    {
+        return $this->hasMany(Course::class);
+    }
 }
