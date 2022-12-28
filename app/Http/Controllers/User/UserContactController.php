@@ -70,12 +70,25 @@ class UserContactController extends Controller
         }
 
         try {
-            $userContact = UserContact::create([
-                'user_id' => $request->user()->id,
-                'type' => $request->type,
-            ], [
-                'url' => $request->url,
-            ]);
+            $user = User::where('id', $request->user()->id)->first();
+
+            if(!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User tidak ditemukan'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $userContact = UserContact::where('user_id', $request->user()->id)->where('type', $request->type)->first();
+
+            if ($userContact) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Kontak sudah ada'
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            $userContact = $user->contact()->create($request->all());
 
             return response()->json([
                 'status' => true,
@@ -118,6 +131,13 @@ class UserContactController extends Controller
                     'status' => false,
                     'message' => 'Kontak tidak ditemukan'
                 ], Response::HTTP_NOT_FOUND);
+            }
+
+            if ($userContact->type == $request->type) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Kontak sudah ada'
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $userContact->update($request->all());

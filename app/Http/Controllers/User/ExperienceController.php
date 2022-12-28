@@ -31,7 +31,7 @@ class ExperienceController extends Controller
 
     public function get(Request $request)
     {
-        $experience = Experience::where('user_id', $request->user()->id)->get();
+        $experience = Experience::with('jobdesk')->where('user_id', $request->user()->id)->get();
 
         if (empty($experience)) {
             return response()->json([

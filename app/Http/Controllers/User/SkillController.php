@@ -95,12 +95,9 @@ class SkillController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $skill = Skill::findOrFail($id);
+        $skill = Skill::where('user_id', $request->user()->id)->first();
 
-        $skill->update([
-            'name' => $request->name,
-            'level' => $request->level
-        ]);
+        $skill->update($request->all());
 
         return response()->json([
             'status' => true,
@@ -110,7 +107,7 @@ class SkillController extends Controller
 
     public function delete($id)
     {
-        $skill = Skill::findOrFail($id);
+        $skill = Skill::where('user_id', $request->user()->id)->first();
 
         $skill->delete();
 

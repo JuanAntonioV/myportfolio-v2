@@ -10,6 +10,9 @@ use App\Http\Controllers\User\ExperienceController;
 use App\Http\Controllers\User\JobDeskController;
 use App\Http\Controllers\User\SkillController;
 use App\Http\Controllers\User\ResumeController;
+use App\Http\Controllers\Project\ProjectController;
+use App\Http\Controllers\Project\ProjectPathController;
+use App\Http\Controllers\Project\ProjectTechnologieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,4 +99,27 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('resume', [ResumeController::class, 'get']);
     Route::post('resume', [ResumeController::class, 'add']);
     Route::delete('resume/{id}', [ResumeController::class, 'delete']);
+
+    // Project
+    Route::prefix('project')->group(function () {
+        Route::get('all', [ProjectController::class, 'index']);
+        Route::get('/', [ProjectController::class, 'get']);
+        Route::post('/', [ProjectController::class, 'add']);
+        Route::put('{id}', [ProjectController::class, 'update']);
+        Route::delete('{id}', [ProjectController::class, 'delete']);
+
+        // Technologies
+        Route::get('technologie/all', [ProjectTechnologieController::class, 'index']);
+        Route::get('technologie/{projectId}', [ProjectTechnologieController::class, 'get']);
+        Route::post('technologie', [ProjectTechnologieController::class, 'add']);
+        Route::put('technologie/{id}', [ProjectTechnologieController::class, 'update']);
+        Route::delete('technologie/{id}', [ProjectTechnologieController::class, 'delete']);
+
+        // Paths
+        Route::get('path/all', [ProjectPathController::class, 'index']);
+        Route::get('path/{projectId}', [ProjectPathController::class, 'get']);
+        Route::post('path', [ProjectPathController::class, 'add']);
+        Route::put('path/{id}', [ProjectPathController::class, 'update']);
+        Route::delete('path/{id}', [ProjectPathController::class, 'delete']);
+    });
 });

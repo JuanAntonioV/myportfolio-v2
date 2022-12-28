@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function getUser(Request $request, $id)
     {
-        $user = User::findOrfail($id);
+        $user = User::where('id', $id)->first();
 
         if (!$user) {
             return response()->json([
@@ -44,7 +44,7 @@ class UserController extends Controller
     public function updateUserDetail(Request $request, $id)
     {
         try {
-            $user = User::findOrfail($id);
+            $user = User::where('id', $id)->first();
 
             if (!$user) {
                 return response()->json([
@@ -97,7 +97,7 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        $user = User::findOrfail($request->user()->id);
+        $user = User::where('id', $request->user()->id)->first();
 
         $data = $user->with(['detail', 'contact', 'resume', 'project', 'experience', 'skill', 'course'])->find($user->id);
 
