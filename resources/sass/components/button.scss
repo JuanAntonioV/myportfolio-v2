@@ -1,0 +1,5 @@
+@layer components {
+    .btnTertinary {
+        @apply px-8 py-4 bg-transparent border border-tertinary text-tertinary rounded-lg flexCenter gap-2 font-sfmono hover:bg-hoverTertinary duration-200;
+    }
+}

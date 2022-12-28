@@ -1,0 +1,9 @@
+@layer components {
+    .animate-borderBottom {
+        @apply after:duration-200 after:absolute transition-all after:rounded-full after:-bottom-0 after:h-0.5 after:bg-primary after:left-1/2 after:-translate-x-1/2 after:w-0;
+    }
+
+    .animate-borderRight {
+        @apply after:duration-200 after:absolute transition-all after:rounded-full after:-bottom-0 after:h-0.5 after:bg-primary after:left-1/2 after:-translate-x-1/2 after:w-0;
+    }
+}

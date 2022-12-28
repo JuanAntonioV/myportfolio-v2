@@ -1,0 +1,41 @@
+@layer components {
+    .flexCenter {
+        @apply flex justify-center items-center;
+    }
+
+    .flexBetween {
+        @apply flex justify-between items-center;
+    }
+
+    .flexAround {
+        @apply flex justify-around items-center;
+    }
+
+    .flexEvenly {
+        @apply flex justify-evenly items-center;
+    }
+
+    .flexStart {
+        @apply flex justify-start items-center;
+    }
+
+    .flexEnd {
+        @apply flex justify-end items-center;
+    }
+
+    .gridCenter {
+        @apply grid place-items-center;
+    }
+
+    .gridStart {
+        @apply grid place-items-start;
+    }
+
+    .gridEnd {
+        @apply grid place-items-end;
+    }
+
+    .absoluteCenter {
+        @apply absolute inset-0 m-auto;
+    }
+}
