@@ -8,6 +8,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserContactController;
 use App\Http\Controllers\User\ExperienceController;
 use App\Http\Controllers\User\JobDeskController;
+use App\Http\Controllers\User\SkillController;
+use App\Http\Controllers\User\ResumeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,8 +59,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Create & Update User Contact
     Route::get('contact/all', [UserContactController::class, 'index']);
-    Route::get('contact', [UserContactController::class, 'getContact']);
-    Route::post('contact', [UserContactController::class, 'contact']);
+    Route::get('contact', [UserContactController::class, 'get']);
+    Route::post('contact', [UserContactController::class, 'add']);
+    Route::put('contact/{id}', [UserContactController::class, 'update']);
     Route::delete('contact/{id}', [UserContactController::class, 'deleteContact']);
 
     // User Experience
@@ -73,4 +76,24 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('jobdesk/{expId}', [JobDeskController::class, 'add']);
     Route::put('jobdesk/{id}', [JobDeskController::class, 'update']);
     Route::delete('jobdesk/{id}', [JobDeskController::class, 'delete']);
+
+    // Skill
+    Route::get('skill/all', [SkillController::class, 'index']);
+    Route::get('skill', [SkillController::class, 'get']);
+    Route::post('skill', [SkillController::class, 'add']);
+    Route::put('skill/{id}', [SkillController::class, 'update']);
+    Route::delete('skill/{id}', [SkillController::class, 'delete']);
+
+    // Courses
+    Route::get('courses/all', [CourseController::class, 'index']);
+    Route::get('courses', [CourseController::class, 'get']);
+    Route::post('courses', [CourseController::class, 'add']);
+    Route::put('courses/{id}', [CourseController::class, 'update']);
+    Route::delete('courses/{id}', [CourseController::class, 'delete']);
+
+    // Resume
+    Route::get('resume/all', [ResumeController::class, 'index']);
+    Route::get('resume', [ResumeController::class, 'get']);
+    Route::post('resume', [ResumeController::class, 'add']);
+    Route::delete('resume/{id}', [ResumeController::class, 'delete']);
 });

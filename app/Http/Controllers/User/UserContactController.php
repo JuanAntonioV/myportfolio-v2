@@ -30,7 +30,7 @@ class UserContactController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function getContact(Request $request)
+    public function get(Request $request)
     {
         $contact = UserContact::where('user_id', $request->user()->id)->get();
 
@@ -48,7 +48,7 @@ class UserContactController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function contact(Request $request)
+    public function add(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'type' => 'required|string|regex:/^[a-zA-Z]+$/u',
@@ -70,7 +70,7 @@ class UserContactController extends Controller
         }
 
         try {
-            $userContact = UserContact::updateOrCreate([
+            $userContact = UserContact::create([
                 'user_id' => $request->user()->id,
                 'type' => $request->type,
             ], [
@@ -91,7 +91,52 @@ class UserContactController extends Controller
         }
     }
 
-    public function deleteContact(Request $request, $id)
+    public function update(Request $request, $id)
+    {
+         $validator = Validator::make($request->all(), [
+            'type' => 'string|regex:/^[a-zA-Z]+$/u',
+            'url' => 'url',
+        ], [
+            'type.string' => 'Tipe kontak harus berupa string',
+            'type.regex' => 'Tipe kontak harus berupa huruf',
+            'url.url' => 'URL kontak harus berupa URL',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi gagal',
+                'error' => $validator->errors()->first()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            $userContact = UserContact::where('user_id', $request->user()->id)->where('id', $id)->first();
+
+            if (!$userContact) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Kontak tidak ditemukan'
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $userContact->update($request->all());
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Data kontak berhasil diperbarui',
+                'data' => $userContact
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function delete(Request $request, $id)
     {
         $userContact = UserContact::where('user_id', $request->user()->id)->where('id', $id)->first();
 
