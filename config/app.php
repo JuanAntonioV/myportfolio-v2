@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -195,6 +195,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Custom Service Providers...
+         */
+        Jenssegers\Agent\AgentServiceProvider::class,
+
     ],
 
     /*
@@ -210,6 +215,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ])->toArray(),
 
 ];

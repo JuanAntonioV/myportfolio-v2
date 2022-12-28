@@ -30,6 +30,8 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'created_at',
+        'updated_at',
     ];
 
 //    /**
@@ -41,17 +43,17 @@ class User extends Authenticatable
 //        'email_verified_at' => 'datetime',
 //    ];
 
-    public function userDetail()
+    public function detail()
     {
         return $this->hasOne(UserDetail::class);
     }
 
-    public function userContact()
+    public function contact()
     {
         return $this->hasMany(UserContact::class);
     }
 
-    public function userResume()
+    public function resume()
     {
         return $this->hasMany(UserResume::class);
     }
@@ -74,5 +76,10 @@ class User extends Authenticatable
     public function course()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function loginLog()
+    {
+        return $this->hasMany(UserLoginLog::class);
     }
 }
