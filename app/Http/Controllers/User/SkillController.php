@@ -30,7 +30,7 @@ class SkillController extends Controller
 
     public function get(Request $request)
     {
-        $skill = Skill::where('user_id', $request->user()->id)->first();
+        $skill = Skill::where('user_id', $request->user()->id)->get();
 
         if (empty($skill)) {
             return response()->json([
@@ -65,9 +65,8 @@ class SkillController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $user = $request->user();
-
-        $user->skill()->create([
+        $skill = Skill::create([
+            'user_id' => $request->user()->id,
             'name' => $request->name,
             'level' => $request->level
         ]);
@@ -95,19 +94,20 @@ class SkillController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $skill = Skill::where('user_id', $request->user()->id)->first();
+        $skill = Skill::where('id', $id)->first();
 
         $skill->update($request->all());
 
         return response()->json([
             'status' => true,
-            'message' => 'Data skill berhasil diubah'
+            'message' => 'Data skill berhasil diubah',
+            'data' => $skill
         ], Response::HTTP_OK);
     }
 
     public function delete($id)
     {
-        $skill = Skill::where('user_id', $request->user()->id)->first();
+        $skill = Skill::where('id', $id)->first();
 
         $skill->delete();
 

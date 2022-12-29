@@ -10,6 +10,7 @@ use App\Http\Controllers\User\ExperienceController;
 use App\Http\Controllers\User\JobDeskController;
 use App\Http\Controllers\User\SkillController;
 use App\Http\Controllers\User\ResumeController;
+use App\Http\Controllers\User\CourseController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Project\ProjectPathController;
 use App\Http\Controllers\Project\ProjectTechnologieController;

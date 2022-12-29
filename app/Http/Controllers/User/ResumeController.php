@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Resume;
+use App\Models\UserResume;
 use App\Models\User;
 
 class ResumeController extends Controller
 {
     public function index()
     {
-        $resume = Resume::all();
+        $resume = UserResume::all();
 
         if (empty($resume)) {
             return response()->json([
@@ -31,7 +31,7 @@ class ResumeController extends Controller
 
     public function get(Request $request)
     {
-        $resume = Resume::where('user_id', $request->user()->id)->get();
+        $resume = UserResume::where('user_id', $request->user()->id)->get();
 
         if (empty($resume)) {
             return response()->json([
@@ -49,85 +49,114 @@ class ResumeController extends Controller
 
     public function add(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string',
-            'status' => 'required|boolean',
-        ], [
-            'title.required' => 'Judul resume harus diisi',
-            'title.string' => 'Judul resume harus berupa string',
-            'status.required' => 'Status resume harus diisi',
-            'status.boolean' => 'Status resume harus berupa boolean',
-        ]);
-
-        if ($validator->fails()) {
+        try {
+            $validator = Validator::make($request->all(), [
+                'value' => 'required|file|mimes:pdf|max:1024',
+                'status' => 'required|boolean',
+            ], [
+                'value.required' => 'File resume harus diisi',
+                'value.file' => 'File resume harus berupa file',
+                'value.mimes' => 'File resume harus berupa file pdf',
+                'value.max' => 'File resume maksimal 1 MB',
+                'status.required' => 'Status resume harus diisi',
+                'status.boolean' => 'Status resume harus berupa boolean',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+    
+            $filename = time() . '-' . str_replace(' ', '', $request->file('value')->getClientOriginalName());
+            $path = $request->file('value')->storeAs('resume', $filename);
+            $validasi['value'] = $path;
+    
+            $resume = UserResume::create([
+                'user_id' => $request->user()->id,
+                'value' => $path,
+                'status' => $request->status,
+            ]);
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'Data resume berhasil ditambahkan',
+                'data' => $resume
+            ], Response::HTTP_CREATED);
+        } catch (\Exepction $th) {
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()->first()
-            ], Response::HTTP_BAD_REQUEST);
+                'message' => 'Data resume gagal ditambahkan',
+                'error' => $th->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $user = User::find($request->user()->id);
-
-        if (empty($user)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'User tidak ditemukan'
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $resume = $user->resume->create([
-            'title' => $request->title,
-            'status' => $request->status,
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data resume berhasil ditambahkan',
-            'data' => $resume
-        ], Response::HTTP_CREATED);
     }
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'string',
-            'status' => 'boolean',
-        ], [
-            'title.string' => 'Judul resume harus berupa string',
-            'status.boolean' => 'Status resume harus berupa boolean',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'value' => 'required|file|mimes:pdf|max:1024',
+                'status' => 'required|boolean',
+            ], [
+                'value.required' => 'File resume harus diisi',
+                'value.file' => 'File resume harus berupa file',
+                'value.mimes' => 'File resume harus berupa file pdf',
+                'value.max' => 'File resume maksimal 1 MB',
+                'status.required' => 'Status resume harus diisi',
+                'status.boolean' => 'Status resume harus berupa boolean',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+    
+            $resume = UserResume::where('id', $id)->first();
+    
+            if (empty($resume)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data resume tidak ditemukan'
+                ], Response::HTTP_NOT_FOUND);
+            }
 
-        if ($validator->fails()) {
+            $oldFile = $resume->value;
+
+            if (file_exists(public_path($oldFile))) {
+                unlink(public_path($oldFile));
+            }
+    
+            $filename = time() . '-' . str_replace(' ', '', $request->file('value')->getClientOriginalName());
+            $path = $request->file('value')->storeAs('resume', $filename);
+            $validasi['value'] = $path;
+    
+            $resume->update([
+                'user_id' => $request->user()->id,
+                'value' => $path,
+                'status' => $request->status,
+            ]);
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'Data resume berhasil diubah',
+                'data' => $resume
+            ], Response::HTTP_OK);
+        } catch (\Exepction $th) {
             return response()->json([
                 'status' => false,
-                'message' => $validator->errors()->first()
-            ], Response::HTTP_BAD_REQUEST);
+                'message' => 'Data resume gagal diubah',
+                'error' => $th->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $resume = Resume::where('id', $id)->first();
-
-        if (empty($resume)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Data resume tidak ditemukan'
-            ], Response::HTTP_NOT_FOUND);
-        }
-
-        $resume->update([
-            'title' => $request->title,
-            'status' => $request->status,
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Data resume berhasil diubah',
-            'data' => $resume
-        ], Response::HTTP_OK);
     }
 
     public function delete($id)
     {
-        $resume = Resume::where('id', $id)->first();
+        $resume = UserResume::where('id', $id)->first();
 
         if (empty($resume)) {
             return response()->json([
@@ -137,6 +166,12 @@ class ResumeController extends Controller
         }
 
         $resume->delete();
+
+        $oldFile = $resume->value;
+
+        if (file_exists(public_path($oldFile))) {
+            unlink(public_path($oldFile));
+        }
 
         return response()->json([
             'status' => true,
