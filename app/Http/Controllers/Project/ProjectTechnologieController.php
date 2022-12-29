@@ -24,7 +24,7 @@ class ProjectTechnologieController extends Controller
 
     public function get(Request $request, $id)
     {
-        $projectTechnologie = ProjectTechnologie::where('project_id', $id)->first();
+        $projectTechnologie = ProjectTechnologie::where('project_id', $id)->get();
 
         if (empty($projectTechnologie)) {
             return response()->json([
@@ -43,10 +43,11 @@ class ProjectTechnologieController extends Controller
     public function add(Request $request, $projectId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:project_technologies,name',
         ], [
             'name.required' => 'Nama teknologi harus diisi',
             'name.string' => 'Nama teknologi harus berupa string',
+            'name.unique' => 'Nama teknologi sudah ada',
         ]);
 
         if ($validator->fails()) {
@@ -57,9 +58,10 @@ class ProjectTechnologieController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $projectTechnologie = Project::where('id', $projectId)->first();
-
-        $projectTechnologie->projectTechnologie()->create($request->all());
+        $projectTechnologie = ProjectTechnologie::create([
+            'project_id' => $projectId,
+            'name' => $request->name,
+        ]);
 
         return response()->json([
             'status' => true,

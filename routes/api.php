@@ -99,6 +99,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('resume/all', [ResumeController::class, 'index']);
     Route::get('resume', [ResumeController::class, 'get']);
     Route::post('resume', [ResumeController::class, 'add']);
+    Route::put('resume/{id}', [ResumeController::class, 'update']);
+    Route::post('resume/{id}/file', [ResumeController::class, 'updateFile']);
     Route::delete('resume/{id}', [ResumeController::class, 'delete']);
 
     // Project
@@ -107,19 +109,20 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/', [ProjectController::class, 'get']);
         Route::post('/', [ProjectController::class, 'add']);
         Route::put('{id}', [ProjectController::class, 'update']);
+        Route::post('{id}/image', [ProjectController::class, 'updateImage']);
         Route::delete('{id}', [ProjectController::class, 'delete']);
 
         // Technologies
         Route::get('technologie/all', [ProjectTechnologieController::class, 'index']);
-        Route::get('technologie/{projectId}', [ProjectTechnologieController::class, 'get']);
-        Route::post('technologie', [ProjectTechnologieController::class, 'add']);
+        Route::get('{projectId}/technologie', [ProjectTechnologieController::class, 'get']);
+        Route::post('{projectId}/technologie', [ProjectTechnologieController::class, 'add']);
         Route::put('technologie/{id}', [ProjectTechnologieController::class, 'update']);
         Route::delete('technologie/{id}', [ProjectTechnologieController::class, 'delete']);
 
         // Paths
         Route::get('path/all', [ProjectPathController::class, 'index']);
-        Route::get('path/{projectId}', [ProjectPathController::class, 'get']);
-        Route::post('path', [ProjectPathController::class, 'add']);
+        Route::get('{projectId}/path', [ProjectPathController::class, 'get']);
+        Route::post('{projectId}/path', [ProjectPathController::class, 'add']);
         Route::put('path/{id}', [ProjectPathController::class, 'update']);
         Route::delete('path/{id}', [ProjectPathController::class, 'delete']);
     });

@@ -43,23 +43,29 @@ class ProjectPathController extends Controller
     public function add(Request $request, $projectId)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:project_paths,name',
+            'url' => 'required|string|url',
         ], [
             'name.required' => 'Nama teknologi harus diisi',
             'name.string' => 'Nama teknologi harus berupa string',
+            'url.required' => 'URL project harus diisi',
+            'url.string' => 'URL project harus berupa string',
+            'url.url' => 'URL project harus berupa URL',
+            'name.unique' => 'Nama teknologi sudah ada',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data project gagal ditambahkan',
-                'data' => $validator->errors()->first()
+                'message' => $validator->errors()->first()
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $projectPath = Project::where('id', $projectId)->first();
-
-        $projectPath->projectPath()->create($request->all());
+        $projectPath = ProjectPath::create([
+            'project_id' => $projectId,
+            'name' => $request->name,
+            'url' => $request->url,
+        ]);
 
         return response()->json([
             'status' => true,
@@ -71,16 +77,19 @@ class ProjectPathController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'string',
+            'name' => 'string|unique:project_paths,name',
+            'url' => 'string|url',
         ], [
             'name.string' => 'Nama teknologi harus berupa string',
+            'url.string' => 'URL project harus berupa string',
+            'url.url' => 'URL project harus berupa URL',
+            'name.unique' => 'Nama teknologi sudah ada',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Data project gagal ditambahkan',
-                'data' => $validator->errors()->first()
+                'message' => $validator->errors()->first()
             ], Response::HTTP_BAD_REQUEST);
         }
 

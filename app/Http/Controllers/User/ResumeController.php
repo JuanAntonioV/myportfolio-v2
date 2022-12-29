@@ -97,15 +97,10 @@ class ResumeController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'value' => 'required|file|mimes:pdf|max:1024',
                 'status' => 'required|boolean',
             ], [
-                'value.required' => 'File resume harus diisi',
-                'value.file' => 'File resume harus berupa file',
-                'value.mimes' => 'File resume harus berupa file pdf',
-                'value.max' => 'File resume maksimal 1 MB',
-                'status.required' => 'Status resume harus diisi',
                 'status.boolean' => 'Status resume harus berupa boolean',
+                'status.required' => 'Status resume harus diisi',
             ]);
     
             if ($validator->fails()) {
@@ -124,19 +119,8 @@ class ResumeController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            $oldFile = $resume->value;
-
-            if (file_exists(public_path($oldFile))) {
-                unlink(public_path($oldFile));
-            }
-    
-            $filename = time() . '-' . str_replace(' ', '', $request->file('value')->getClientOriginalName());
-            $path = $request->file('value')->storeAs('resume', $filename);
-            $validasi['value'] = $path;
-    
             $resume->update([
                 'user_id' => $request->user()->id,
-                'value' => $path,
                 'status' => $request->status,
             ]);
     
@@ -152,6 +136,55 @@ class ResumeController extends Controller
                 'error' => $th->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function updateFile(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'value' => 'required|file|mimes:pdf|max:1024',
+        ], [
+            'value.required' => 'File resume harus diisi',
+            'value.file' => 'File resume harus berupa file',
+            'value.mimes' => 'File resume harus berupa file pdf',
+            'value.max' => 'File resume maksimal 1 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $resume = UserResume::where('id', $id)->first();
+
+        if (empty($resume)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data resume tidak ditemukan'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $oldFile = $resume->value;
+
+        if (file_exists(public_path($oldFile))) {
+            unlink(public_path($oldFile));
+        }
+
+        $filename = time() . '-' . str_replace(' ', '', $request->file('value')->getClientOriginalName());
+        $path = $request->file('value')->storeAs('resume', $filename);
+        $validasi['value'] = $path;
+
+        $resume->update([
+            'value' => $path,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data resume berhasil ditambahkan',
+            'data' => $resume
+        ], Response::HTTP_CREATED);
+        
     }
 
     public function delete($id)
