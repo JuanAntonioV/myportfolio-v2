@@ -65,14 +65,14 @@ const MainNavbar = () => {
                     <Fade direction="up" cascade damping={0.1} triggerOnce>
                         <ul className="hidden md:flex items-center text-[10pt] text-primary  font-light font-sfmono">
                             {navLinks.map((link, index) => (
-                                <li
-                                    key={index}
-                                    className="px-4 py-4 cursor-pointer"
-                                >
-                                    <span className="textHighlight">
-                                        0{index + 1}.
-                                    </span>
-                                    <a href={`#${link.name.toLowerCase()}`}>
+                                <li key={index} className="cursor-pointer">
+                                    <a
+                                        href={`#${link.name.toLowerCase()}`}
+                                        className="px-4 py-4"
+                                    >
+                                        <span className="textHighlight">
+                                            0{index + 1}.
+                                        </span>
                                         {link.name}
                                     </a>
                                 </li>
