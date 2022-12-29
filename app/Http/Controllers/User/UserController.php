@@ -74,12 +74,7 @@ class UserController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
 
-            $user->detail()->update([
-                'full_name' => $request->full_name,
-                'biography' => $request->biography,
-                'position' => $request->position,
-                'birthday' => $request->birthday,
-            ]);
+            $user->detail()->update($request->all());
 
             return response()->json([
                 'status' => true,

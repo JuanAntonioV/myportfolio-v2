@@ -1,0 +1,21 @@
+@layer components {
+    .textDisplay {
+        @apply text-5xl font-semibold font-calibre leading-tight;
+    }
+
+    .textTitle {
+        @apply text-3xl font-bold -mb-2;
+    }
+
+    .textHighlight {
+        @apply font-sfmono text-tertinary;
+    }
+
+    .textParagraph {
+        @apply text-base;
+    }
+
+    .textLink {
+        @apply text-tertinary relative animate-borderBottom hover:after:w-full after:h-[1px] after:-bottom-1;
+    }
+}

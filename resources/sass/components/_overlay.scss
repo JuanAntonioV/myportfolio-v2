@@ -1,0 +1,5 @@
+@layer components {
+    .overlay {
+        @apply w-full h-full flex items-start bg-black/20 duration-300 ease-in-out fixed top-0 left-0;
+    }
+}
