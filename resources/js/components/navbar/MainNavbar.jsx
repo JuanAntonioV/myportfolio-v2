@@ -50,7 +50,7 @@ const MainNavbar = () => {
     return (
         <header>
             <nav
-                className="fixed top-0 z-50 w-full py-4 pl-6 pr-2 bg-dark duration-300 ease-in-out md:px-12"
+                className="fixed top-0 z-50 w-full py-4 pl-6 pr-2 duration-200 ease-in-out bg-dark md:px-12"
                 style={navbarHide}
             >
                 <div className="container m-auto flexBetween">
@@ -68,7 +68,7 @@ const MainNavbar = () => {
                                 <li key={index} className="cursor-pointer">
                                     <a
                                         href={`#${link.name.toLowerCase()}`}
-                                        className="px-4 py-4"
+                                        className="px-4 py-4 text-sm"
                                     >
                                         <span className="textHighlight">
                                             0{index + 1}.

@@ -8,7 +8,7 @@
     }
 
     .textHighlight {
-        @apply font-sfmono text-tertinary;
+        @apply font-sfmono text-tertinary text-xs;
     }
 
     .textParagraph {
@@ -16,6 +16,6 @@
     }
 
     .textLink {
-        @apply text-tertinary relative animate-borderBottom hover:after:w-full after:h-[1px] after:-bottom-1;
+        @apply text-tertinary relative animate-borderBottom hover:after:w-full after:h-[1px];
     }
 }

@@ -10,7 +10,7 @@ const EmailSticky = () => {
             <div className="relative h-[360px] w-10">
                 <a
                     href="mailto:juananthonio23@gmail.com"
-                    className="block rotate-90 font-sfmono text-secondary text-[14px] tracking-wider translate-y-0 hover:-translate-y-1 hover:text-highlight duration-300 ease-in-out"
+                    className="block text-sm tracking-wider duration-300 ease-in-out rotate-90 translate-y-0 font-sfmono text-secondary hover:-translate-y-1 hover:text-highlight hover:text-primary"
                 >
                     juananthonio23@gmail.com
                 </a>

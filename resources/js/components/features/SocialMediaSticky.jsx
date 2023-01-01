@@ -11,15 +11,18 @@ const SocialMediaSticky = () => {
             direction="left"
             className="fixed bottom-0 hidden lg:block left-10"
         >
-            <div className="relative h-[370px]">
-                <ul className={"flex items-center flex-col gap-8"}>
+            <div className="relative h-[350px]">
+                <ul className={"flex items-center flex-col gap-7"}>
                     <li className="list-none">
                         <a
                             href="https://github.com/JuanAntonioV"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <GitHubIcon />
+                            <GitHubIcon
+                                width="24"
+                                className="duration-300 ease-in-out translate-y-0 fill-secondary hover:-translate-y-1 hover:fill-primary"
+                            />
                         </a>
                     </li>
                     <li className="list-none">
@@ -28,7 +31,10 @@ const SocialMediaSticky = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <LinkedinIcon />
+                            <LinkedinIcon
+                                width="22"
+                                className="duration-300 ease-in-out translate-y-0 fill-secondary hover:-translate-y-1 hover:fill-primary"
+                            />
                         </a>
                     </li>
                     <li className="list-none">
@@ -37,7 +43,10 @@ const SocialMediaSticky = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <InstagramIcon />
+                            <InstagramIcon
+                                width="20"
+                                className="duration-300 ease-in-out translate-y-0 fill-secondary hover:-translate-y-1 hover:fill-primary"
+                            />
                         </a>
                     </li>
                     <li className="list-none">
@@ -46,7 +55,10 @@ const SocialMediaSticky = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <WhatsAppIcon />
+                            <WhatsAppIcon
+                                width="21"
+                                className="duration-300 ease-in-out translate-y-0 fill-secondary hover:-translate-y-1 hover:fill-primary"
+                            />
                         </a>
                     </li>
                 </ul>

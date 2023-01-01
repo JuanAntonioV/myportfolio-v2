@@ -7,7 +7,7 @@ module.exports = {
                 primary: "#ccd6f6",
                 secondary: "#8892b0",
                 tertinary: "#64ffda",
-                hoverTertinary: "rgba(100,255,218,0.1)",
+                hoverTertinary: "rgba(100, 255, 218, 0.05)",
                 primaryLight: "#d0d9f3",
                 dark: "#0a192f",
                 active: "#8892b021",
@@ -18,6 +18,7 @@ module.exports = {
                 sfmono: ["SFMono", "sans-serif"],
             },
             fontSize: {
+                xxs: "0.78rem",
                 base: "1rem",
             },
         },

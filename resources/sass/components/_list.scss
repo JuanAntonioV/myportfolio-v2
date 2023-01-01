@@ -1,0 +1,7 @@
+.skill-list li::before {
+    position: absolute;
+    content: "▹";
+    color: #61f9d5;
+    padding-right: 1rem;
+    margin-left: -25px;
+}

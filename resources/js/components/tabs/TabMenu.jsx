@@ -33,13 +33,17 @@ const TabMenu = ({ tabs, active, onActive, vertical, className }) => {
             className={
                 !vertical
                     ? "flex items-center w-fit relative"
-                    : "flex items-center flex-col relative w-fit"
+                    : "flex items-center flex-col relative w-full"
             }
         >
             {tabs.map((tab, index) => (
                 <button
                     key={tab.id}
-                    className={`w-28 h-12 ${className ? className : ""}`}
+                    className={`w-full h-14 text-start pl-8 hover:bg-hoverTertinary hover:text-tertinary duration-300 ${
+                        index === active
+                            ? "bg-hoverTertinary text-tertinary"
+                            : ""
+                    } ${className ? className : ""}`}
                     onClick={() => handleTabClick(index)}
                     ref={btnRef}
                 >
@@ -49,8 +53,8 @@ const TabMenu = ({ tabs, active, onActive, vertical, className }) => {
             <div
                 className={
                     !vertical
-                        ? "bg-tertinary duration-300 h-[1px] absolute bottom-0 left-0"
-                        : "bg-tertinary duration-300 w-[1px] absolute" +
+                        ? "bg-tertinary duration-300 h-[2px] absolute bottom-0 left-0 rounded-full"
+                        : "bg-tertinary duration-300 w-[2px] absolute rounded-full" +
                           " top-0 left-0"
                 }
                 style={
